@@ -60,12 +60,9 @@ export async function DELETE(
 
     const {id} = await params
 
-    // Verify ownership before deleting
-    const existing = await prisma.healthData.findFirst({
+    const {count} = await prisma.healthData.deleteMany({
         where: {id, authorId: session.user.id}
     })
-    if (!existing) return NextResponse.json({error: 'Not found'}, {status: 404})
-
-    await prisma.healthData.delete({where: {id}})
+    if (count === 0) return NextResponse.json({error: 'Not found'}, {status: 404})
     return NextResponse.json({})
 }
