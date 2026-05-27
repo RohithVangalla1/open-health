@@ -45,7 +45,8 @@ export async function PATCH(
 
     const healthData = await prisma.healthData.update({
         where: {id},
-        data: body
+        data: { data: body.data }
+    })
     })
     return NextResponse.json({healthData})
 }
